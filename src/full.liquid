@@ -2,18 +2,41 @@
   <style>
     .trmnl .column {
       display: block;
-      column-count: 3;
+      column-count: 4;
       font-size: 1em;
     }
 
     .value {
       font-size: 1.2em;
     }
+
+    .weather-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .weather-time {
+      width: 24px;
+      text-align: left;
+    }
+
+    .weather-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 0px;
+      flex-shrink: 0;
+    }
+
+    .weather-temp {
+      width: 60px;
+      text-align: right;
+    }
   </style>
 
   <div class="layout">
     <div class="columns">
-      <div class="column" data-list-limit="true" data-list-hidden-count="false" data-overflow="true">
+      <div class="column" data-list-limit="true" data-overflow="true">
         {% assign previous_day = "" %}
         {% assign days = "Søndag|Mandag|Tirsdag|Onsdag|Torsdag|Fredag|Lørdag" | split: "|" %}
         {% assign months = "|Januar|Februar|Mars|April|Mai|Juni|Juli|August|September|Oktober|November|Desember" |
@@ -29,12 +52,16 @@
         </div>
         {% assign previous_day = current_day %}
         {% endif %}
-        <div class="rounded--medium flex gap--medium">
+        <div class="weather-item">
           {% assign temp = data.data.instant.details.air_temperature %}
-          <span class="value padding-right--xl"> {{ data.time | date: "%H" }}</span>
-          {% if temp < 0 %} <span class="value text--gray-10"> {{ temp }}°C</span>
+          {% assign symbol = data.data.next_1_hours.summary.symbol_code %}
+          <span class="value weather-time">{{ data.time | date: "%H" }}</span>
+          <img class="weather-icon"
+            src="https://raw.githubusercontent.com/metno/weathericons/main/weather/svg/{{ symbol }}.svg"
+            alt="{{ symbol }}" style="filter: brightness(0);" />
+          {% if temp < 0 %} <span class="value weather-temp text--gray-10">{{ temp }}°C</span>
             {% else %}
-            <span class="value"> {{ temp }}°C</span>
+            <span class="value weather-temp">{{ temp }}°C</span>
             {% endif %}
         </div>
         {% endfor %}

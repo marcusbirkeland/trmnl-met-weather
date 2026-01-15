@@ -1,0 +1,98 @@
+<div class="view view--{{ size }}">
+  <style>
+    .trmnl .column {
+      display: block;
+      column-count: 2;
+      column-gap: 16px;
+      font-size: 0.9em;
+    }
+
+    .value {
+      font-size: 1em;
+    }
+
+    .weather-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+      break-inside: avoid;
+    }
+
+    .weather-time {
+      width: 20px;
+      text-align: left;
+    }
+
+    .weather-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .weather-temp {
+      width: 50px;
+      text-align: right;
+    }
+
+    .day-header {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 4px;
+      break-inside: avoid;
+      break-after: avoid;
+    }
+  </style>
+
+  <div class="layout">
+    <div class="columns">
+      <div class="column" data-list-limit="true" data-overflow="true">
+        {% assign previous_day = "" %}
+        {% assign days = "Søndag|Mandag|Tirsdag|Onsdag|Torsdag|Fredag|Lørdag" | split: "|" %}
+        {% assign months = "|Januar|Februar|Mars|April|Mai|Juni|Juli|August|September|Oktober|November|Desember" |
+        split: "|" %}
+        {%for data in properties.timeseries %}
+        {% assign current_day = data.time | date: "%Y-%m-%d" %}
+        {% if current_day != previous_day %}
+        {% assign day_index = data.time | date: "%w" | plus: 0 %}
+        {% assign month_index = data.time | date: "%-m" | plus: 0 %}
+        {% assign day_num = data.time | date: "%-d" %}
+        <div class="day-header">
+          <span class="label">{{ days[day_index] }}, {{ day_num }}. {{ months[month_index] }}</span>
+        </div>
+        {% assign previous_day = current_day %}
+        {% endif %}
+        <div class="weather-item">
+          {% assign temp = data.data.instant.details.air_temperature %}
+          {% assign symbol = data.data.next_1_hours.summary.symbol_code %}
+          <span class="value weather-time">{{ data.time | date: "%H" }}</span>
+          <img class="weather-icon"
+            src="https://raw.githubusercontent.com/metno/weathericons/main/weather/svg/{{ symbol }}.svg"
+            alt="{{ symbol }}" style="filter: brightness(0);" />
+          {% if temp < 0 %}
+          <span class="value weather-temp text--gray-10">{{ temp }}°C</span>
+          {% else %}
+          <span class="value weather-temp">{{ temp }}°C</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="title_bar">
+    <svg width="16px" height="16px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 0H8V2H10V0Z" fill="#000000" />
+      <path d="M14.6569 2.75735L13.2426 1.34314L11.8284 2.75735L13.2426 4.17157L14.6569 2.75735Z" fill="#000000" />
+      <path d="M4.75735 1.34314L6.17157 2.75735L4.75735 4.17157L3.34314 2.75735L4.75735 1.34314Z" fill="#000000" />
+      <path d="M16 6H14V8H16V6Z" fill="#000000" />
+      <path
+        d="M7.87398 10C7.42994 8.27477 5.86384 7 4 7C1.79086 7 0 8.79086 0 11V15H15V14C15 11.7909 13.2091 10 11 10H7.87398Z"
+        fill="#000000" />
+      <path
+        d="M12 7C12 7.35064 11.9398 7.68722 11.8293 8H9.19666C8.55829 6.89629 7.57872 6.01456 6.40147 5.49978C6.92022 4.6032 7.88967 4 9 4C10.6569 4 12 5.34315 12 7Z"
+        fill="#000000" />
+    </svg>
+    <div class="title">Abels Gate 9 - MET værdata</div>
+  </div>
+</div>
