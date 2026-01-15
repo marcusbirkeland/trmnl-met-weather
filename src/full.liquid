@@ -1,14 +1,23 @@
 <div class="view view--{{ size }}">
   <style>
-
+    .trmnl .column {
+      display: block;
+      column-count: 2;
+      column-gap: 20px;
+      font-size: 1em;
+    }
   </style>
 
   <div class="layout">
     <div class="columns">
       <div class="column" data-list-limit="true" data-list-hidden-count="false" data-overflow="true">
         {%for data in properties.timeseries %}
-        <div class="label"> time {{ data.time }}</div>
-        <div class="label"> {{ data.data.instant.details.air_temperature }}°C</div>
+        <div>
+
+          <span class="label"> {{ data.time | date: "%H:%M" | plus: 1 }}:00</span>
+          <span class="label"> {{ data.data.instant.details.air_temperature }}°C</span>
+        </div>
+
         {% endfor %}
       </div>
     </div>
@@ -27,6 +36,6 @@
         d="M12 7C12 7.35064 11.9398 7.68722 11.8293 8H9.19666C8.55829 6.89629 7.57872 6.01456 6.40147 5.49978C6.92022 4.6032 7.88967 4 9 4C10.6569 4 12 5.34315 12 7Z"
         fill="#000000" />
     </svg>
-    <div class="title">MET</div>
+    <div class="title">Abels Gate 9 - MET værdata</div>
   </div>
 </div>
