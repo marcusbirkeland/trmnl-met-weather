@@ -2,7 +2,9 @@
   <style>
     .trmnl .column {
       display: block;
-      font-size: 1em;
+      column-count: 2;
+      height: 225px;
+      font-size: 0.8em;
     }
 
     .value {
@@ -45,7 +47,7 @@
 
   <div class="layout">
     <div class="columns">
-      <div class="column" data-list-limit="true" data-table-max-height="10px" data-overflow="true">
+      <div class="column" data-list-limit="true" data-overflow="true">
         {% assign previous_day = "" %}
         {% assign days = "Søndag|Mandag|Tirsdag|Onsdag|Torsdag|Fredag|Lørdag" | split: "|" %}
         {% assign months = "|Januar|Februar|Mars|April|Mai|Juni|Juli|August|September|Oktober|November|Desember" |

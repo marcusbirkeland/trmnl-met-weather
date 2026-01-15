@@ -3,7 +3,7 @@
     .trmnl .column {
       display: block;
       column-count: 2;
-      column-gap: 16px;
+      height: 480px;
       font-size: 0.9em;
     }
 
@@ -69,11 +69,10 @@
           <img class="weather-icon"
             src="https://raw.githubusercontent.com/metno/weathericons/main/weather/svg/{{ symbol }}.svg"
             alt="{{ symbol }}" style="filter: brightness(0);" />
-          {% if temp < 0 %}
-          <span class="value weather-temp text--gray-10">{{ temp }}°C</span>
-          {% else %}
-          <span class="value weather-temp">{{ temp }}°C</span>
-          {% endif %}
+          {% if temp < 0 %} <span class="value weather-temp text--gray-10">{{ temp }}°C</span>
+            {% else %}
+            <span class="value weather-temp">{{ temp }}°C</span>
+            {% endif %}
         </div>
         {% endfor %}
       </div>
