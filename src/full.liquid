@@ -2,8 +2,12 @@
   <style>
     .trmnl .column {
       display: block;
-      column-count: 2;
+      column-count: 3;
       font-size: 1em;
+    }
+
+    .value {
+      font-size: 1.2em;
     }
   </style>
 
@@ -11,19 +15,27 @@
     <div class="columns">
       <div class="column" data-list-limit="true" data-list-hidden-count="false" data-overflow="true">
         {% assign previous_day = "" %}
+        {% assign days = "Søndag|Mandag|Tirsdag|Onsdag|Torsdag|Fredag|Lørdag" | split: "|" %}
+        {% assign months = "|Januar|Februar|Mars|April|Mai|Juni|Juli|August|September|Oktober|November|Desember" |
+        split: "|" %}
         {%for data in properties.timeseries %}
-        {% assign oslo_time = data.time | date: "%s" | plus: 3600 %}
-        {% assign next_hour = oslo_time | plus: 3600 %}
-        {% assign current_day = next_hour | date: "%Y-%m-%d" %}
+        {% assign current_day = data.time | date: "%Y-%m-%d" %}
         {% if current_day != previous_day %}
+        {% assign day_index = data.time | date: "%w" | plus: 0 %}
+        {% assign month_index = data.time | date: "%-m" | plus: 0 %}
+        {% assign day_num = data.time | date: "%-d" %}
         <div style="font-weight: bold; margin-top: 10px;">
-          <span class="label">{{ next_hour | date: "%A, %B %-d" }}</span>
+          <span class="label">{{ days[day_index] }}, {{ day_num }}. {{ months[month_index] }}</span>
         </div>
         {% assign previous_day = current_day %}
         {% endif %}
-        <div>
-          <span class="label"> {{ next_hour | date: "%H:%M" }}</span>
-          <span class="label"> {{ data.data.instant.details.air_temperature }}°C</span>
+        <div class="rounded--medium flex gap--medium">
+          {% assign temp = data.data.instant.details.air_temperature %}
+          <span class="value padding-right--xl"> {{ data.time | date: "%H" }}</span>
+          {% if temp < 0 %} <span class="value text--gray-10"> {{ temp }}°C</span>
+            {% else %}
+            <span class="value"> {{ temp }}°C</span>
+            {% endif %}
         </div>
         {% endfor %}
       </div>
