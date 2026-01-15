@@ -3,7 +3,6 @@
     .trmnl .column {
       display: block;
       column-count: 2;
-      column-gap: 20px;
       font-size: 1em;
     }
   </style>
@@ -11,13 +10,21 @@
   <div class="layout">
     <div class="columns">
       <div class="column" data-list-limit="true" data-list-hidden-count="false" data-overflow="true">
+        {% assign previous_day = "" %}
         {%for data in properties.timeseries %}
+        {% assign oslo_time = data.time | date: "%s" | plus: 3600 %}
+        {% assign next_hour = oslo_time | plus: 3600 %}
+        {% assign current_day = next_hour | date: "%Y-%m-%d" %}
+        {% if current_day != previous_day %}
+        <div style="font-weight: bold; margin-top: 10px;">
+          <span class="label">{{ next_hour | date: "%A, %B %-d" }}</span>
+        </div>
+        {% assign previous_day = current_day %}
+        {% endif %}
         <div>
-          {% assign next_hour = data.time | date: "%s" | plus: 3600 %}
-          <span class="label"> {{ next_hour | date: "%H:%M" }}:00</span>
+          <span class="label"> {{ next_hour | date: "%H:%M" }}</span>
           <span class="label"> {{ data.data.instant.details.air_temperature }}°C</span>
         </div>
-
         {% endfor %}
       </div>
     </div>
