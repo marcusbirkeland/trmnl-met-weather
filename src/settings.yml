@@ -1,0 +1,20 @@
+---
+strategy: polling
+no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: GET
+polling_url: https://api.met.no/weatherapi/locationforecast/2.0/compact?altitude=10&lat=63.41540039726207&lon=10.394003111638417
+polling_headers: 'Content-Type=application/json&User-Agent:trmnl-met-api-client/0.1'
+custom_fields:
+- keyname: latitude
+  field_type: number
+  placeholder: 63.4154
+  name: Latitude
+- keyname: longitude
+  field_type: number
+  placeholder: 10.3940
+  name: Longitude
+name: Metrologisk Institutt Weather Forecast
+description: Display weather forecast data from Metrologisk Institutt (MET Norway) for any given location.
+refresh_interval: 320

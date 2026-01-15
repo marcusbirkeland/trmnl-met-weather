@@ -1,0 +1,10 @@
+# TRMNLP configuration for trmnl entur plugin.
+---
+# auto-reload when files change
+watch:
+  - settings.yml
+  - full.liquid
+  - src
+
+# Time zone IANA identifier to inject into trmnl.user
+time_zone: Europe/Oslo
