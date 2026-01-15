@@ -13,8 +13,8 @@
       <div class="column" data-list-limit="true" data-list-hidden-count="false" data-overflow="true">
         {%for data in properties.timeseries %}
         <div>
-
-          <span class="label"> {{ data.time | date: "%H:%M" | plus: 1 }}:00</span>
+          {% assign next_hour = data.time | date: "%s" | plus: 3600 %}
+          <span class="label"> {{ next_hour | date: "%H:%M" }}:00</span>
           <span class="label"> {{ data.data.instant.details.air_temperature }}°C</span>
         </div>
 
